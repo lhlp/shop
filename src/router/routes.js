@@ -10,10 +10,38 @@ import OrderDetail from '../views/orderDetail/index'
 import Payment from '../views/storeDetail/payment'
 import AddressList from '../views/personal/addressList'
 import AddressDetail from '../views/personal/addressDetail'
+import Login from '../views/login/index'
+import Register from '../views/register/index'
+
 const routes =[
     {
         path:'/',
-        redirect:'/home'
+        redirect:'/login'
+    },
+    {
+        path:'/login',
+        name:'login',
+        components: {
+            default:Login,
+        },
+        meta:{
+            icon:'wap-home-o',
+            title:'登录',
+            // inTabbar: true ,
+        }
+    },
+    {
+        path:'/register',
+        name:'register',
+        components: {
+            header: Navbar,
+            default: Register,
+        },
+        meta:{
+            icon:'wap-home-o',
+            title:'注册',
+            inTabbar: true ,
+        }
     },
     {
         path:'/home',
@@ -66,7 +94,7 @@ const routes =[
             //header: NavBar //告知该路由头部应该展示那个组件
             header:Navbar,
             default:Personal,
-           footer:Tabbar,
+            footer:Tabbar,
         },
         meta:{ //路由其它基本信息 
             //这里面的其它信息都可以进行在定义。
