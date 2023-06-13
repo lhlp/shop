@@ -6,7 +6,10 @@ import Order from '../views/order/index'
 import Personal from '../views/personal/index'
 import StoreDetail from '../views/storeDetail/index'
 import DishesDetail from '../views/dishesDetail/index'
-
+import OrderDetail from '../views/orderDetail/index'
+import Payment from '../views/storeDetail/payment'
+import AddressList from '../views/personal/addressList'
+import AddressDetail from '../views/personal/addressDetail'
 const routes =[
     {
         path:'/',
@@ -99,6 +102,66 @@ const routes =[
         meta:{ //路由其它基本信息 
             //这里面的其它信息都可以进行在定义。
             title:'菜品详情页面',
+            inTabbar: true ,
+        }
+    },
+    {
+        path:'/orderDetail',
+        name:'orderDetail',
+        components:{
+            //header: NavBar //告知该路由头部应该展示那个组件
+            header:Navbar,
+            default:OrderDetail,
+        //    footer:Tabbar,
+        },
+        meta:{ //路由其它基本信息 
+            //这里面的其它信息都可以进行在定义。
+            title:'订单详情页面',
+            inTabbar: true ,
+        }
+    },
+    {
+        path:'/payment',
+        name:'payment',
+        components:{
+            //header: NavBar //告知该路由头部应该展示那个组件
+            header:Navbar,
+            default:Payment,
+        //    footer:Tabbar,
+        },
+        meta:{ //路由其它基本信息 
+            //这里面的其它信息都可以进行在定义。
+            title:'提交订单',
+            inTabbar: true ,
+        }
+    },
+    {
+        path:'/addressList',
+        name:'addressList',
+        components:{
+            //header: NavBar //告知该路由头部应该展示那个组件
+            header:Navbar,
+            default:AddressList,
+        //    footer:Tabbar,
+        },
+        meta:{ //路由其它基本信息 
+            //这里面的其它信息都可以进行在定义。
+            title:'地址列表',
+            inTabbar: true ,
+        }
+    },
+    {
+        path:'/addressDetail',
+        name:'addressDetail',
+        components:{
+            //header: NavBar //告知该路由头部应该展示那个组件
+            header:Navbar,
+            default:AddressDetail,
+        //    footer:Tabbar,
+        },
+        meta:{ //路由其它基本信息 
+            //这里面的其它信息都可以进行在定义。
+            title:'地址列表',
             inTabbar: true ,
         }
     },

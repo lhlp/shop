@@ -11,7 +11,10 @@
 
         <!-- 导航宫格 -->
         <van-grid :gutter="10">
-            <van-grid-item v-for="value in 8" :key="value" icon="photo-o" text="文字" />
+            <!-- <van-grid-item v-for="value in 8" :key="value" icon="photo-o" text="文字" /> -->
+            <van-grid-item  v-for="value in 8" :key="value" >
+                <van-icon class="iconfont" >&#xe615; </van-icon>
+            </van-grid-item>
         </van-grid>
 
         <!-- 店铺排序 -->
@@ -74,6 +77,7 @@
 
 </template>
 <script>
+
 import axios from "axios"
 /**导出该组件 */
 export default{
@@ -98,9 +102,23 @@ export default{
     },
 
 }
+
 </script>
 <!-- scoped: 作用域，当前css只当前的组件生效-->
 <style lang="less" scoped>
+@font-face {
+  font-family: 'iconfont';  /* Project id 2851394 */
+  src: url('//at.alicdn.com/t/font_2851394_xyhu3trqyv.woff2?t=1633611780110') format('woff2'),
+       url('//at.alicdn.com/t/font_2851394_xyhu3trqyv.woff?t=1633611780110') format('woff'),
+       url('//at.alicdn.com/t/font_2851394_xyhu3trqyv.ttf?t=1633611780110') format('truetype');
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
+
 .van-card__title{
     font-size: 14px;
     font-weight:600;
