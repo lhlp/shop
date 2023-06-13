@@ -4,6 +4,8 @@ import Navbar from '../components/nav-bar/index'
 import Dishes from '../views/dishes/index'
 import Order from '../views/order/index'
 import Personal from '../views/personal/index'
+import StoreDetail from '../views/storeDetail/index'
+import DishesDetail from '../views/dishesDetail/index'
 
 const routes =[
     {
@@ -67,6 +69,36 @@ const routes =[
             //这里面的其它信息都可以进行在定义。
             icon:'wap-home-o',
             title:'个人中心',
+            inTabbar: true ,
+        }
+    },
+    {
+        path:'/storeDetail',
+        name:'storeDetail',
+        components:{
+            //header: NavBar //告知该路由头部应该展示那个组件
+            header:Navbar,
+            default:StoreDetail,
+           footer:Tabbar,
+        },
+        meta:{ //路由其它基本信息 
+            //这里面的其它信息都可以进行在定义。
+            title:'店铺详情页面',
+            inTabbar: true ,
+        }
+    },
+    {
+        path:'/dishesDetail',
+        name:'dishesDetail',
+        components:{
+            //header: NavBar //告知该路由头部应该展示那个组件
+            header:Navbar,
+            default:DishesDetail,
+           footer:Tabbar,
+        },
+        meta:{ //路由其它基本信息 
+            //这里面的其它信息都可以进行在定义。
+            title:'菜品详情页面',
             inTabbar: true ,
         }
     },

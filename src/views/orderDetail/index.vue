@@ -1,16 +1,12 @@
 <template>
     <div>
-        <van-tabs v-model="active" animated>
-            <van-tab v-for="index in 4"  :title="'选项 '+ index">
-                内容 {{ index }}
-            </van-tab>
-        </van-tabs>
+
     </div>
 </template>
 <script>
 
 export default{
-    name:'Order', //组件名称
+    name:'OrderDetail', //组件名称
     data(){
         return{
 
