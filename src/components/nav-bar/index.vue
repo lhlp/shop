@@ -4,8 +4,8 @@
   left-text="返回"
   left-arrow
   @click-left="onClickLeft"
-  fixed="true"
-  placeholder="true"
+  :fixed="true"
+  :placeholder="true"
 />
 </template>
 <script>
