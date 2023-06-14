@@ -2,37 +2,63 @@
     <div class="home">
         <!-- 搜索框-->
         <div class="search">
-            <i class="iconfont">&#xe6b0;</i>
+            <i class="iconfont">&#xe8c9;</i>
             <div class="input">
                 <van-search v-model="searchValue" placeholder="请输入搜索关键词" />
             </div>
-            <i class="iconfont">&#xe689;</i>
+            <i class="iconfont">&#xe623;</i>
         </div>
 
         <!-- 导航宫格 -->
         <van-grid :gutter="10">
-            <!-- <van-grid-item v-for="value in 8" :key="value" icon="photo-o" text="文字" /> -->
-            <van-grid-item  v-for="value in 8" :key="value" >
-                <van-icon class="iconfont" >&#xe615; </van-icon>
+            <van-grid-item  
+            @click="screenDishes()"
+            >
+            <van-icon class="iconfont"  > &#xe606; </van-icon>
+            <span style="font-size: 12px;font-weight: 600;">快餐</span>
+            </van-grid-item>
+            <van-grid-item >
+            <van-icon class="iconfont" > &#xe8c0;</van-icon>
+            <span style="font-size: 12px;font-weight: 600;">套饭</span>
+            </van-grid-item>
+            <van-grid-item  >
+            <van-icon class="iconfont" > &#xe675; </van-icon>
+            <span style="font-size: 12px;font-weight: 600;">饮料</span>
+
+            </van-grid-item>
+            <van-grid-item >
+            <van-icon class="iconfont" > &#xfaa4; </van-icon>
+            <span style="font-size: 12px;font-weight: 600;">炒菜</span>
+
+            </van-grid-item>
+            <van-grid-item >
+            <van-icon class="iconfont" > &#xe60a; </van-icon>
+            <span style="font-size: 12px;font-weight: 600;">儿童餐</span>
+
+            </van-grid-item>
+            <van-grid-item >
+            <van-icon class="iconfont" > &#xe60c;</van-icon>
+            <span style="font-size: 12px;font-weight: 600;">面条</span>
+
+            </van-grid-item>
+            <van-grid-item  text="果蔬">
+            <van-icon class="iconfont" >&#xe63c; </van-icon>
+            <span style="font-size: 12px;font-weight: 600;">快餐</span>
+
+            </van-grid-item>
+            <van-grid-item  text="肉蛋">
+            <van-icon class="iconfont" > &#xe725; </van-icon>
+            <span style="font-size: 12px;font-weight: 600;">快餐</span>
+
             </van-grid-item>
         </van-grid>
+        
 
-    <!-- 导航宫格 -->
-    <van-grid :gutter="10">
-      <van-grid-item
-        v-for="value in 8"
-        :key="value"
-        icon="photo-o"
-        text="文字"
-      />
-    </van-grid>
-
-    <!-- 店铺排序 -->
+    
     <van-tabs v-model="active">
-      <van-tab title="标签 1"></van-tab>
-      <van-tab title="标签 2"></van-tab>
-      <van-tab title="标签 3"></van-tab>
-      <van-tab title="标签 4"></van-tab>
+      <van-tab title="全部"></van-tab>
+      <van-tab title="时间升序"></van-tab>
+      <van-tab title="距离升序"></van-tab>
     </van-tabs>
     <!-- 首页店铺列表 -->
     <van-list
@@ -59,9 +85,9 @@
               width: 80px;
               height: 20px;
               font-size: 13px;
-            "
-            >{{ store.score }}</span
-          >
+            ">
+            {{ store.score }}
+            </span>
           <span
             style="
               margin: 0px;
@@ -79,28 +105,6 @@
           }}</van-tag>
         </template>
       </van-card>
-      <!-- <van-card
-                    v-for="goods in goodslist"
-                    :key="goods.id"
-                    :price="goods.price"
-                    :desc="goods.desc"
-                    :title="goods.title"
-                    :thumb="goods.image"
-                    :origin-price="goods.originPrice"
-                    @click="jumpToDetail(goods.id)"
-                    >
-                    <template #tags>
-                        <van-tag plain type="primary" color="#f00" v-if="goods.couponValue" style="margin-right: 6px;">{{goods.couponValue}}</van-tag>
-                        <van-tag plain type="primary" color="#f00" v-show="goods.isFreePostage">包邮</van-tag>
-                    </template>
-                    <template #footer>
-                        <span style="margin-right: 12px;color:#666666">月销量:{{goods.saleNum}}</span>
-                        <van-icon name="cart-circle-o" 
-                            color="#f00" 
-                            size="18" 
-                            @click.stop="handlerToAddCart(goods)"/>
-                    </template>
-            </van-card> -->
     </van-list>
   </div>
 </template>
@@ -130,6 +134,16 @@ export default {
           url: "https://img01.yzcdn.cn/vant/ipad.jpeg",
         },
       ],
+      types: [
+        { id: 0, name: "火锅" },
+        { id: 1, name: "家常菜" },
+        { id: 2, name: "炸鸡" },
+        { id: 3, name: "甜品" },
+        { id: 4, name: "饮品" },
+        { id: 5, name: "烧烤" },
+        { id: 6, name: "水果" },
+        { id: 7, name: "快餐" },
+      ],
     };
   },
   methods: {
@@ -139,16 +153,20 @@ export default {
     jumpToStoreDetail() {
       this.$router.push({ name: "storeDetail" });
     },
+    // 筛选菜单
+    screenDishes(id){
+      this.$router.push({ name: "dishesDetail", params: { typeId: id }});
+    }
 }
 }
 </script>
 <!-- scoped: 作用域，当前css只当前的组件生效-->
 <style lang="less" scoped>
 @font-face {
-  font-family: 'iconfont';  /* Project id 2851394 */
-  src: url('//at.alicdn.com/t/font_2851394_xyhu3trqyv.woff2?t=1633611780110') format('woff2'),
-       url('//at.alicdn.com/t/font_2851394_xyhu3trqyv.woff?t=1633611780110') format('woff'),
-       url('//at.alicdn.com/t/font_2851394_xyhu3trqyv.ttf?t=1633611780110') format('truetype');
+  font-family: 'iconfont';  /* Project id 4123028 */
+  src: url('//at.alicdn.com/t/c/font_4123028_ad0v51m1pxg.woff2?t=1686758785425') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4123028_ad0v51m1pxg.woff?t=1686758785425') format('woff'),
+       url('//at.alicdn.com/t/c/font_4123028_ad0v51m1pxg.ttf?t=1686758785425') format('truetype');
 }
 .iconfont{
     font-family:"iconfont" !important;

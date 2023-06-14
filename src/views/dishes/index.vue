@@ -54,7 +54,7 @@
       </template>
 
       <!-- 店铺信息展示 -->
-      <template #footer >
+      <!-- <template #footer >
         <div  class="shop_card" v-for="shop in shops" :key="shop.id">
         <div style="float: left;">
         <van-image :src="shop.url" style="width: 50px;height:50px;text-align: left;"/>
@@ -66,10 +66,12 @@
         <van-button @click="jumpToStoreDetail()">进入店铺</van-button>
       </div>
       </div>
-      </template>
+      </template> -->
+      
     </van-card>
   </div>
 </template>
+
 <script>
 export default {
   name: "Dishes", //组件名称
@@ -110,7 +112,7 @@ export default {
         { id: 4, name: "饮品" },
         { id: 5, name: "烧烤" },
         { id: 6, name: "水果" },
-        { id: 7, name: "鲜花" },
+        { id: 7, name: "快餐" },
       ],
     };
   },
