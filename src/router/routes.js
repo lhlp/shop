@@ -125,7 +125,7 @@ const routes =[
             //header: NavBar //告知该路由头部应该展示那个组件
             header:Navbar,
             default:DishesDetail,
-           footer:Tabbar,
+        //    footer:Tabbar,
         },
         meta:{ //路由其它基本信息 
             //这里面的其它信息都可以进行在定义。
