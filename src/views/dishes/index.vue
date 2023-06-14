@@ -12,22 +12,22 @@
       </template>
     </van-search>
     <!-- 分类宫格 -->
-    <van-grid :gutter="20">
-      <van-grid-item
-        v-for="type in types"
-        :key="type.id"
-        :text="type.name"
-        @click="selectDishesByTypeId(type.id)"
-      >
-      </van-grid-item>
-    </van-grid>
+      <van-tabs>
+        <van-tab v-for="type in types"  
+        :key="type.id" 
+        :title="type.name"   
+        @click="selectDishesByTypeId(type.id)">
+        </van-tab>
+      </van-tabs>
+
 
     <!-- 菜品排序 -->
+
     <van-tabs v-model="activeName">
-      <van-tab title="销量从高到低" name="a" @click="sortBySaleNum()">
+      <van-tab title="全部" name="a" @click="showAll()">
       </van-tab>
-      <van-tab title="价格从低到高" name="b" @click="sortByPrice()"></van-tab>
-      <van-tab title="好评从高到低" name="c" @click="sortByComment()"></van-tab>
+      <van-tab title="价格从低到高" name="b" @click="sortByPrice()" ></van-tab>
+      <van-tab title="时间从高到低" name="c" @click="sortByTime()"></van-tab>
       <van-tab
         title="距离从高到低"
         name="d"
@@ -45,24 +45,27 @@
       :price="dish.price"
       :origin-price="dish.originPrice"
       :thumb="dish.imag"
-      style="
-        text-align: left;
-        margin: 10px;
-        border-radius: 8px;
-        box-shadow: 0px 0px 7px 1px #aaaeb2;
-      "
       @click="jumpToDishesDetail()"
+      class="dishes_card"
     >
-      <template #bottom>
+      <template #tags>
         <van-tag plain type="danger">50减5</van-tag>
         <van-tag plain type="danger">8.32折</van-tag>
       </template>
-      <template #footer>
-        <van-card
-          title="永辉超市 49分钟  4.9km"
-          style="text-align: left; height: 30px"
-          @click="jumpToStoreDetail()"
-        />
+
+      <!-- 店铺信息展示 -->
+      <template #footer >
+        <div  class="shop_card" v-for="shop in shops" :key="shop.id">
+        <div style="float: left;">
+        <van-image :src="shop.url" style="width: 50px;height:50px;text-align: left;"/>
+        </div>
+        <div style="flex: left;">
+        <span class="shop_title">{{shop.name}}</span><br>
+        <span style="color: crimson;font-size:14px ;margin-right: 10px;">{{ shop.score }}分</span>
+        <span>{{ shop.desc }}</span>
+        <van-button @click="jumpToStoreDetail()">进入店铺</van-button>
+      </div>
+      </div>
       </template>
     </van-card>
   </div>
@@ -85,6 +88,19 @@ export default {
           sales: 200,
           shopId: "",
         },
+      ],
+      shops:[
+        {
+          id: 1,
+          name: "永辉超市",
+          desc: "49分钟  4.9km",
+          score: "4.7",
+          sales: "1000",
+          disc:"4",
+          distance: "4.9",
+          time:49,
+          url: "https://img1.baidu.com/it/u=1036227057,120946014&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+        }
       ],
       types: [
         { id: 0, name: "火锅" },
@@ -110,16 +126,19 @@ export default {
     jumpToDishesDetail(id) {
       this.$router.push({ name: "dishesDetail", params: { id: id } });
     },
+    jumpToStoreDetail(id) {
+      this.$router.push({ name: "storeDetail", params: { id: id } });
+    },
+    showAll(){
 
-    sortBySaleNum() {
+    },
+    sortByTime() {
       //  this.getGoodsListBySaleNum()
     },
     sortByPrice() {
       //  this.getGoodsListByPrice()
     },
-    sortByComment() {
-      //  this.getGoodsListByPrice()
-    },
+
     sortByDistance() {},
     selectDishesByTypeId(id) {},
   },
@@ -127,6 +146,13 @@ export default {
 </script>
 <!-- scoped: 作用域，当前css只当前的组件生效-->
 <style lang="less" scoped>
+// 菜品卡片
+.dishes_card{
+  text-align: left;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+}
 .van-card__title {
   font-size: 14px;
   font-weight: 600;
@@ -136,6 +162,28 @@ export default {
 }
 .van-card__origin-price {
   margin-left: 5px;
-  margin-right: 100px;
+}
+// 店铺
+.van-card__footer{
+  border-top: 1px solid #EBEEF5;
+  text-align: left;
+}
+.shop_card{
+  border-top: 1px solid #EBEEF5;
+  text-align: left;
+  margin-top: 10px;
+  padding-bottom: 5px;
+}
+.shop_title{
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.van-button{
+  float: right;
+  font-size: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 20px;
 }
 </style>

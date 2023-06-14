@@ -1,15 +1,48 @@
-
 <template>
     <div class="personal-center">
-        <div>
+
+
+        <div class="personal_photo">
             <!-- 头像 -->
             <van-image
                 round
-                width="5rem"
-                height="5rem"
+                width="60px"
+                height="60px"
+                style="margin-top: 10px;margin-bottom: 10px;"
                 src="https://img01.yzcdn.cn/vant/cat.jpeg"
             /><br>
             <span>{{named}}</span>
+        </div>
+
+
+        <el-card class="personal_card" >
+            <div slot="header" class="personal_header">
+                <span class="personal_title">订单</span>
+            </div>
+            <!-- 订单下的标签 -->
+            <div class="order">
+                <van-grid clickable :column-num="4">
+                    <van-grid-item icon="cash-on-deliver" text="待付款" to="/" />
+                    <van-grid-item icon="logistics" text="待收货" url="/vant/mobile.html" />
+                    <van-grid-item icon="underway-o" text="待使用" to="/" />
+                    <van-grid-item icon="after-sale" text="退款/售后" to="/" />
+                </van-grid>
+            </div>
+         
+
+
+        </el-card>
+     
+        <!-- 分割线 -->
+        <!-- <van-divider /> -->
+
+            <!-- 地址栏 -->
+        <div 
+        class="address"
+        @click=" jumpToAddressList()"
+        >
+            <van-icon name="location-o" style="text-align: left;"/>
+            <span>地址</span>
         </div>
 
         <div>
@@ -35,24 +68,10 @@
             />
             </van-popup>
         </div>
-        <!-- 地址栏 -->
-        <div class="address">
-            <van-icon name="location-o" style="text-align: left;"/>
+        <!-- 退出登录 -->
+        <div >
+            <van-button class="login_button" type="danger" @click="quit">退出登录</van-button>
         </div>
-        <!-- 分割线 -->
-        <van-divider />
-    <!-- 订单下的标签 -->
-        <div class="order">
-            <div class="title">订单</div>
-            <van-grid clickable :column-num="4">
-                <van-grid-item icon="cash-on-deliver" text="待付款" to="/" />
-                <van-grid-item icon="logistics" text="待收货" url="/vant/mobile.html" />
-                <van-grid-item icon="underway-o" text="待使用" to="/" />
-                <van-grid-item icon="after-sale" text="退款/售后" to="/" />
-            </van-grid>
-        </div>
-        <br><br><br><br><br><br><br><br><br><br><br>
-        <van-button type="danger" @click="quit">退出登录</van-button>
     </div>
 </template>
 <script>
@@ -99,16 +118,38 @@ export default (await import('vue')).defineComponent({
         quit(){
 
         },
+        jumpToAddressList(){
+            this.$router.push({name:'addressList'})
+        },
     },
 })
 
 </script>
 <!-- scoped: 作用域，当前css只当前的组件生效-->
 <style lang="less" scoped>
-.title{
+// 卡片
+.personal_card{
+    margin:5px;
+    margin-top: 20px;
+    border-radius:10px;
+}
+.personal_header{
     text-align: left;
-    margin-left: 24px;
-    font-weight: 600;
+    height: 20px;
+} 
+
+/deep/ .el-card__body{
+    padding: 0;
+}
+/deep/.el-card__header{
+    padding:10px ;
+}
+
+
+.van-cell{
+    margin-top: 20px;
+    border: 1px solid #EBEEF5;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 }
 .van-cell__title, .van-cell__value {
     text-align: center;
@@ -124,5 +165,25 @@ export default (await import('vue')).defineComponent({
 }
 /deep/ .van-coupon__corner{
     display: none;
+}
+
+// 地址
+.address{
+    margin:5px;
+    margin-top: 20px;
+    border-radius:10px;
+    height: 45;
+    width:300;
+    border: 1px solid #EBEEF5;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    padding: 10px;
+}
+
+// 登录
+.login_button{
+    margin-top: 30px;
+    height: 40px;
+    width: 150px;
+    border-radius:10px;
 }
 </style>

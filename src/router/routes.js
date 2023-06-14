@@ -62,7 +62,7 @@ const routes =[
         path:'/dishes',
         name:'dishes',
         components:{
-            header: Navbar, //告知该路由头部应该展示那个组件
+           
             default:Dishes,
             footer:Tabbar,
         },
