@@ -31,20 +31,21 @@
 
             <!-- 订单信息 -->
             <el-card  
+                 v-for="order in orderList"
+                 :key="order.id"
                 class="orderDetail_card" 
-                @click="jumpToOrderDetail()"
             >
                     <div slot="header" class="orderDetail_header"  >
-                        <span class="orderCard_title">{{name}} </span>                
-                        <span class="orderCard_title">></span>
+                        <span class="orderCard_title">{{order.name}} </span>                
                     </div>
                     <van-card
-                        title="永辉超市"
-                        thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+                        v-for="dish in dishes"
+                        :key="dish.id"
+                        :title="dish.name"
+                        :thumb="dish.imag"
                         style="text-align: left;"
-                        price="19.00"
-                        num="1"
-                        @click="jumpToOrderDetail()"
+                        :price="dish.price"
+                        :num="dish.num"
                     />
                     <div  class="orderDetail_footer" >
                         <span style="font-size: 12px; ">打包费</span>
@@ -56,16 +57,19 @@
                     </div>
                     <div  class="orderDetail_footer" >
                         <span style="font-size: 12px; ">已优惠</span>
-                        <span style="font-size: 12px;float: right; margin-right: 20px; color: crimson;">-￥{{ other }}</span>
+                        <span style="font-size: 12px;float: right; margin-right: 20px; color: crimson;">-￥{{ order.disc }}</span>
                     </div>
                     <div  class="orderDetail_footer" >
-                        <span style="font-size: 15px; float: right; margin-right: 20px;">实付款￥39</span>
+                        <span style="font-size: 15px; float: right; margin-right: 20px;">实付款￥{{order.price}}</span>
                         
                     </div>
             </el-card > 
 
             <!-- 配送信息 -->
-            <el-card class="orderDetail_card" >
+            <el-card class="orderDetail_card" 
+                 v-for="order in orderList"
+                 :key="order.id"
+            >
                 <div slot="header" class="orderDetail_header">
                     <span class="orderDetail_title">配送信息</span>
                    
@@ -73,19 +77,19 @@
                 <div class="orderDetail_body">
                    <p>
                     <span style="font-size: 12px; ">配送时间</span>  
-                    <span style="font-size: 12px;float: right; margin-right: 20px;">{{ other }}</span>
+                    <span style="font-size: 12px;float: right; margin-right: 20px;">2023.06.15 12:05</span>
                 </p>
                 <p>
                     <span style="font-size: 12px; ">配送时长</span>  
-                    <span style="font-size: 12px;float: right; margin-right: 20px;">{{ other }}</span>
+                    <span style="font-size: 12px;float: right; margin-right: 20px;">{{ order.time }}</span>
                 </p>
                 <p>
                     <span style="font-size: 12px; ">配送地址</span>  
-                    <span style="font-size: 12px;float: right; margin-right: 20px;">{{ other }}</span>
+                    <span style="font-size: 11px;float: right; margin-right: 10px;">{{ order.address }}</span>
                 </p>
                 <p>
                     <span style="font-size: 12px; ">配送骑手</span>  
-                    <span style="font-size: 12px;float: right; margin-right: 20px;">{{ other }}</span>
+                    <span style="font-size: 12px;float: right; margin-right: 20px;">张三</span>
                 </p>
                 </div>
             </el-card>
@@ -99,15 +103,55 @@ export default{
     name:'OrderDetail', //组件名称
     data(){
         return{
+            id:'',
             name:"永辉超市",
             score: null,
             type:"已完成",
-            other:5
+            orderList: [
+                {
+                id: 1,
+                addressId: "1111",
+                address: "重庆市渝北区龙兴镇普福大道459号",
+                disc: "4.5折",
+                time: 45,
+                score:5,
+                type:1,
+                userId: 1111,
+                name:"永超市",
+                price:"43.00"
+                },
+            ],
+            dishes: [
+                {
+                id: 1,
+                name: "冰糖麒麟西瓜 约4.5斤",
+                desc: "新鲜时令",
+                price: "24.80",
+                originPrice: "29.80",
+                imag: "https://img1.baidu.com/it/u=1036227057,120946014&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+                sales: 200,
+                shopId: "",
+                num:2,
+                },
+            ],
         }
     },
     methods:{
-
-    },
+        //加载订单
+        async onLoad() {
+                const {list}  = await getSearchOrder(this.$route.params.id);
+                        this.orderList = [
+                            ...this.orderList, //拷贝数组
+                            ...list
+                        ] ;
+                        this.loading = false ;
+                },
+                getOrderList(id){
+                    getSearchOrder(id).then((resp)=>{
+                        this.orderList = resp.list;
+                    });
+                },
+            },
 }
 </script>
 <!-- scoped: 作用域，当前css只当前的组件生效-->

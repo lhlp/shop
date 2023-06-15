@@ -5,10 +5,10 @@
       v-model="searchValue"
       show-action
       placeholder="请输入搜索关键词"
-      @search="onSearchDishes"
+      @search="onSearch"
     >
       <template #action>
-        <div @click="onSearchDishes">搜索</div>
+        <div @click="onSearchDishes()">搜索</div>
       </template>
     </van-search>
     <!-- 分类宫格 -->
@@ -16,24 +16,11 @@
         <van-tab v-for="type in types"  
         :key="type.id" 
         :title="type.name"   
-        @click="selectDishesByTypeId(type.id)">
+        @change="changeTab"
+        >
         </van-tab>
       </van-tabs>
 
-
-    <!-- 菜品排序 -->
-
-    <van-tabs v-model="activeName">
-      <van-tab title="全部" name="a" @click="showAll()">
-      </van-tab>
-      <van-tab title="价格从低到高" name="b" @click="sortByPrice()" ></van-tab>
-      <van-tab title="时间从高到低" name="c" @click="sortByTime()"></van-tab>
-      <van-tab
-        title="距离从高到低"
-        name="d"
-        @click="sortByDistance()"
-      ></van-tab>
-    </van-tabs>
 
     <!-- 菜品列表 -->
 
@@ -45,7 +32,7 @@
       :price="dish.price"
       :origin-price="dish.originPrice"
       :thumb="dish.imag"
-      @click="jumpToDishesDetail()"
+      @click="jumpToDishesDetail(dish)"
       class="dishes_card"
     >
       <template #tags>
@@ -117,26 +104,48 @@ export default {
     };
   },
   methods: {
-    onSearchDishes() {
+  //加载我们的商品
+    async onLoad() {
+      const {list}  = await getSearchDishes(active);
+            this.dishes = [
+                ...this.dishes, //拷贝数组
+                ...list
+            ] ;
+            this.loading = false ;
+    },
+    //当菜单被切换调用此方法
+    changeTab(name,title){
+            //console.log(name+title);
+            //发送请求，填充商品信息 通过类型ID查找商品数据 name
+          this.getDishes(this.active)
+        },
+    //点击搜索按钮进行搜索  回车进行触发该事件
+    onSearch(){
+      this.getDishes(this.searchValue);
+    },
+    onSearchDishes(){
+      this.getDishes(this.searchValue);
       console.log("搜索成功");
     },
-    handlerClickDishType() {
-      console.log("切换" + this.activeName + "成功");
-      //发送请求，填充商品信息 通过类型ID查找商品数据 name
-      // this.dishes = [];
+    // 查询全部数据
+    getDishes(id){
+            getSearchDishes(id).then((resp)=>{
+                this.dishes = resp.list;
+            });
+        },
+    jumpToDishesDetail(data) {
+      this.$router.push({ name: "dishesDetail", params: { dish: data } });
     },
-    jumpToDishesDetail(id) {
-      this.$router.push({ name: "dishesDetail", params: { id: id } });
-    },
-    jumpToStoreDetail(id) {
-      this.$router.push({ name: "storeDetail", params: { id: id } });
-    },
+
+    // 展示全部
     showAll(){
 
     },
-    sortByTime() {
+    // 按折扣升序
+    sortByDiscount() {
       //  this.getGoodsListBySaleNum()
     },
+    // 按价格降序
     sortByPrice() {
       //  this.getGoodsListByPrice()
     },

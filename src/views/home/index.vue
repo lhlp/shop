@@ -4,7 +4,7 @@
         <div class="search">
             <i class="iconfont">&#xe8c9;</i>
             <div class="input">
-                <van-search v-model="searchValue" placeholder="请输入搜索关键词" />
+                <van-search v-model="searchValue" placeholder="请输入搜索关键词"  @search="onSearch" />
             </div>
             <i class="iconfont">&#xe623;</i>
         </div>
@@ -12,53 +12,68 @@
         <!-- 导航宫格 -->
         <van-grid :gutter="10">
             <van-grid-item  
-            @click="screenDishes()"
+            @click="screenDishes(1010)"
             >
             <van-icon class="iconfont"  > &#xe606; </van-icon>
             <span style="font-size: 12px;font-weight: 600;">快餐</span>
             </van-grid-item>
-            <van-grid-item >
+
+            <van-grid-item 
+            @click="screenDishes(1002)"
+            >
             <van-icon class="iconfont" > &#xe8c0;</van-icon>
             <span style="font-size: 12px;font-weight: 600;">套饭</span>
             </van-grid-item>
-            <van-grid-item  >
+            <van-grid-item  
+            @click="screenDishes(1004)"
+            >
             <van-icon class="iconfont" > &#xe675; </van-icon>
             <span style="font-size: 12px;font-weight: 600;">饮料</span>
-
             </van-grid-item>
-            <van-grid-item >
+
+            <van-grid-item 
+            @click="screenDishes(1001)"
+            >
             <van-icon class="iconfont" > &#xfaa4; </van-icon>
             <span style="font-size: 12px;font-weight: 600;">炒菜</span>
-
             </van-grid-item>
-            <van-grid-item >
+
+            <van-grid-item 
+            @click="screenDishes(1009)"
+            >
             <van-icon class="iconfont" > &#xe60a; </van-icon>
             <span style="font-size: 12px;font-weight: 600;">儿童餐</span>
-
             </van-grid-item>
-            <van-grid-item >
+
+            <van-grid-item 
+            @click="screenDishes(1006)"
+            >
             <van-icon class="iconfont" > &#xe60c;</van-icon>
             <span style="font-size: 12px;font-weight: 600;">面条</span>
-
             </van-grid-item>
-            <van-grid-item  text="果蔬">
+
+            <van-grid-item 
+            @click="screenDishes(1008)"
+            >
             <van-icon class="iconfont" >&#xe63c; </van-icon>
-            <span style="font-size: 12px;font-weight: 600;">快餐</span>
-
+            <span style="font-size: 12px;font-weight: 600;">果蔬</span>
             </van-grid-item>
-            <van-grid-item  text="肉蛋">
+
+            <van-grid-item 
+            @click="screenDishes(1007)"
+            >
             <van-icon class="iconfont" > &#xe725; </van-icon>
-            <span style="font-size: 12px;font-weight: 600;">快餐</span>
-
+            <span style="font-size: 12px;font-weight: 600;">肉蛋</span>
             </van-grid-item>
+            
         </van-grid>
         
 
     
-    <van-tabs v-model="active">
-      <van-tab title="全部"></van-tab>
-      <van-tab title="时间升序"></van-tab>
-      <van-tab title="距离升序"></van-tab>
+    <van-tabs v-model="active" @change="changeTab"  >
+      <van-tab title="全部" name=""></van-tab>
+      <van-tab title="时间升序" name="time"></van-tab>
+      <van-tab title="距离升序" name="distance"></van-tab>
     </van-tabs>
     <!-- 首页店铺列表 -->
     <van-list
@@ -69,13 +84,13 @@
     >
       <!-- discInfo:拼接距离和时间 -->
       <van-card
-        v-for="store in stores"
+        v-for="store in storesList"
         :key="store.id"
         :title="store.name"
-        desc="2.3km 45分钟"
+        :desc="store.desc"
         :thumb="store.url"
         style="text-align: left"
-        @click="jumpToStoreDetail()"
+        @click="jumpToStoreDetail(id)"
       >
         <template #tags>
           <span
@@ -95,8 +110,7 @@
               margin-left: 20px;
               margin-right: 80px;
               height: 20px;
-              color: #646566;
-            "
+              color: #646566;"
             >{{ store.sales }}</span
           >
 
@@ -120,12 +134,12 @@ export default {
       loading: false,
       finished: true,
       visible: false, //回到顶部展示/隐藏
-      active: 2,
-      stores: [
+      active: "",
+      storesList: [
         {
           id: 1,
           name: "鼠标麻辣烫",
-          des: "五星级中华美食",
+          desc: "五星级中华美食",
           score: 4.5,
           sales: 1000,
           disc: "4.5折",
@@ -134,29 +148,44 @@ export default {
           url: "https://img01.yzcdn.cn/vant/ipad.jpeg",
         },
       ],
-      types: [
-        { id: 0, name: "火锅" },
-        { id: 1, name: "家常菜" },
-        { id: 2, name: "炸鸡" },
-        { id: 3, name: "甜品" },
-        { id: 4, name: "饮品" },
-        { id: 5, name: "烧烤" },
-        { id: 6, name: "水果" },
-        { id: 7, name: "快餐" },
-      ],
+
     };
   },
   methods: {
     //加载我们的商品
-    onLoad() {},
+    async onLoad() {
+      const {list}  = await getSearchStores(active);
+            this.storesList = [
+                ...this.storesList, //拷贝数组
+                ...list
+            ] ;
+            this.loading = false ;
+    },
+    //当菜单被切换调用此方法
+    changeTab(name,title){
+            //console.log(name+title);
+            //发送请求，填充商品信息 通过类型ID查找商品数据 name
+          this.getStoresList(this.active)
+        },
+    //点击搜索按钮进行搜索  回车进行触发该事件
+    onSearch(){
+      this.getStoresList(this.searchValue);
+    },
+    // 查询全部数据
+    getStoresList(id){
+            getSearchStores(id).then((resp)=>{
+                this.storesList = resp.list;
+            });
+        },
     //跳转店铺详情
-    jumpToStoreDetail() {
-      this.$router.push({ name: "storeDetail" });
+    jumpToStoreDetail(id) {
+      this.$router.push({ name: "storeDetail" , params: { storeId: id }});
     },
     // 筛选菜单
     screenDishes(id){
-      this.$router.push({ name: "dishesDetail", params: { typeId: id }});
-    }
+      this.$router.push({ name: "dishes", params: { typeId: id }});
+    },
+    
 }
 }
 </script>

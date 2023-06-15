@@ -1,15 +1,27 @@
 <template>
   <div>
     <!-- 展示店铺信息的标签 -->
-    <div class="storeDtail">
-      <div class="storeLabelInfo">
-        <van-icon color="orange" name="star" />
-        <!-- 评分 -->
-        <van-tag round color="orange" type="primary">{{ store.score }}</van-tag>
-        <!-- 是否商家自配 -->
-        <van-tag color="grey" v-if="store.isSelf" round type="primary"
-          >商家自配
-        </van-tag>
+    <div class="storeInfor">
+      <div  class="shop_card" >
+        <div style="float: left;">
+          <van-image :src="store.url" class="shop_image" />
+        </div>
+        
+        <div class="shop_info_box">
+          <span class="shop_title">{{store.name}}</span>
+          <br>
+          <!-- 评分 -->
+          <van-icon color="orange" name="star" />
+          <van-tag round color="orange" type="primary">{{ store.score }}</van-tag>
+          <!-- 是否商家自配 -->
+          <van-tag color="grey" v-if="true" round type="primary"
+            >商家自配
+          </van-tag>
+          <br>
+          <span style="font-size: 11px;">{{store.desc}}</span>
+        </div>
+        <span class="van-tag van-tag--plain van-tag--danger" style="float: left; margin: 5px;">买{{store.disc}}减10</span>
+        <span class="van-tag van-tag--plain van-tag--danger" style="float: left; margin: 5px;">买{{store.disc}}减10</span>
 
         <!-- 优惠券单元格 -->
         <van-coupon-cell
@@ -70,8 +82,7 @@
                   margin: 0px;
                   width: 80px;
                   height: 20px;
-                  font-size: 13px;
-                "
+                  font-size: 13px;"
                 >{{ goods.price }}</span
               >
               <span
@@ -193,17 +204,15 @@ export default {
         //评分
         score: "4.5分",
         //描述
-        describe: "我们是麻辣烫的搬运工",
-        //优惠类型
-        preferentialType: "红包",
+        desc: "我们是麻辣烫的搬运工",
+        //销售量
+        sales: "5000",
         //优惠金额
-        preferentialMoney: 5,
-        //月销量Monthly sales
-        monthlySales: "1000+",
-        //是否商家自配
-        isSelf: true,
+        disc: 5,
+        distance:'',
         //配送时间delivery time
-        deliveryTime: "45分钟",
+        time:45,
+        url:"https://img1.baidu.com/it/u=117364269,3388110530&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
       },
       detailInfo: "hhhhh",
       //   detailInfo:
@@ -299,19 +308,42 @@ export default {
 </script>
 <!-- scoped: 作用域，当前css只当前的组件生效-->
 <style lang="less" scoped>
+
+// 店铺信息
+.shop_image{
+  width: 60px;
+  height:60px;
+  text-align: left;
+  margin: 10px;
+  border-radius: 5px;
+}
+.shop_info_box{
+  text-align: left;
+  padding-top: 10px;
+}
+.shop_title{
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+// 优惠券
+.van-cell--clickable{
+  border: 1px solid #EBEEF5;
+}
+
+// 商品样式
+.van-card__title {
+  font-size: 14px;
+  font-weight: 600;
+}
 .category {
   display: flex;
 }
 .goodsDtail {
   flex: 1;
 }
-// .storeLabelInfo {
-//   display: flex;
-// }
-.van-card__title {
-  font-size: 14px;
-  font-weight: 600;
-}
+
+
 //购物车样式
 .van-popup {
   height: 55%;

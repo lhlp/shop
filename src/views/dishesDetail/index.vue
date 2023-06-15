@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div >
+      <div   
+      class="imge"
+      v-for="dish in dishes"
+      :key="dish.id">
     <img
         width="100%"
         height="100%"
@@ -7,10 +11,13 @@
         :src="dish.image"
         style="border-radius: 8px"
       />
-      
+      </div>
+
       <!-- 价格数字 -->
     <div class="dish">
-      <div class="price" style="text-align: left">
+      <div class="price" style="text-align: left" 
+            v-for="dish in dishes"
+          :key="dish.id">
         <van-card
           :price="dish.price"
           :origin-price="dish.originPrice"
@@ -26,7 +33,7 @@
         </div>
 
         <!-- 店铺卡片 -->
-        <div  class="shop_card" v-for="shop in shops" :key="shop.id"  @click="jumpToStoreDetail()"
+        <div  class="shop_card" v-for="shop in shops" :key="shop.id"  @click="jumpToStoreDetail(shop.id)"
         >
           <div style="float: left;margin-left:10px ;">
           <van-image :src="shop.url" style="width: 50px;height:50px;text-align: left;"/>
@@ -43,9 +50,7 @@
                     <span class="orderDetail_title" style="font-size: 14px;">菜品信息</span>
                 </div>
                 <p>
-                    <span style="font-size: 12px;margin-left: 10px; 
-
-                    ">{{dish.desc}}</span>  
+                    <span style="font-size: 12px;margin-left: 10px; ">{{dish.desc}}</span>  
                 </p>
                 <p >
                     <span style="font-size: 12px;margin-left: 10px; ">店主联系方式</span>  
@@ -64,13 +69,12 @@
         <van-goods-action-icon
           icon="shop-o"
           text="店铺"
-          @click="onClickStore"
         />
         <van-goods-action-button
           type="danger"
-          text="加入购物车"
-          @click="addToCart"
-        />
+          text="进入店铺"
+          @click="jumpToStoreDetail(shop.id)"  
+         />
       </van-goods-action>
     </div>
   </div>
@@ -80,7 +84,7 @@ export default {
   name: "DishesDetail", //组件名称
   data() {
     return {
-      dish: {
+      dishes: [{
         id: 1,
         name: "冰糖麒麟西瓜 约4.5斤",
         desc: "新鲜时令",
@@ -90,7 +94,8 @@ export default {
           "https://img1.baidu.com/it/u=1036227057,120946014&fm=253&fmt=auto&app=138&f=JPEG?",
         storeId: "",
         sales:1000,
-      },
+      }
+    ],
       shops:[
         {
           id: 1,
@@ -107,16 +112,14 @@ export default {
     };
   },
   methods: {
-    onClickStore() {
-      this.$router.push({ name: "storeDetail" });
-    },
-    addToCart() {
-      this.$toast("加入购物车");
-      this.$router.push({ name: "storeDetail" });
-    },
     jumpToStoreDetail(id) {
-      this.$router.push({ name: "storeDetail", params: { id: id } });
+      this.$router.push({ name: "storeDetail", params: { shopId: id } });
     },
+    async created(){
+      this.dishes =  await getDishesDetail(this.$route.params.id);
+      this.dishes =  await getShopsDetail(this.$route.params.shopId);
+      console.log(this.dishes);
+ },
   },
 };
 </script>
